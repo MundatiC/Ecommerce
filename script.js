@@ -9,6 +9,9 @@ async function fetchProducts() {
       throw error;
     }
   }
+
+  
+
   
   // Function to populate the home page with product cards
   function populateHomePage(products) {
@@ -25,6 +28,10 @@ async function fetchProducts() {
       const productCard = createProductCard(product);
       productCardsContainer.appendChild(productCard);
     });
+
+   
+
+
   }
   
   // Function to create a product card element

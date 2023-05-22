@@ -86,13 +86,46 @@
   }
   
   /* Home page specific styles */
-  .home-background {
-    background-image: url("./images/pexels-jonny-lew-1121123.jpg");
-    background-size: cover;
-    background-position: center;
-    height: 600px;
-    margin-bottom: 2rem;
+  #background-carousel {
+  position: relative;
+  width: 100%;
+  height: 600px;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+#background-carousel img {
+  display: inline-block;
+  height: 100%;
+  animation: slideBackground 10s linear infinite;
+}
+
+@keyframes slideBackground {
+  0% {
+    transform: translateX(0);
   }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+#welcome-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 24px;
+  font-weight: bold;
+  color: #fff;
+  /* Add other styles as needed */
+}
+
+#product-cards-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-gap: 20px;
+}
+
   .product-cards-container {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -117,7 +150,7 @@
   .product-card img {
     width: 100%;
     height: 300px;
-    object-fit: cover;
+    object-fit: contain;
     object-position: center;
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
@@ -145,10 +178,13 @@
   }
   
   .product-details img {
-    width: 200px;
-    height: auto;
-    border-radius: 5px;
-    margin-right: 20px;
+    width: 100%;
+    height: 300px;
+    object-fit: contain;
+    object-position: center;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    padding-right: 20px;
   }
   
   .product-details button{
