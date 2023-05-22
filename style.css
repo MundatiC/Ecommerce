@@ -106,6 +106,8 @@
     padding: 20px;
     margin-bottom: 20px;
     transition: .3s ease-in-out;
+    
+    
   }
   
   .product-card:hover{
@@ -114,12 +116,12 @@
   
   .product-card img {
     width: 100%;
-    height: auto;
-    border-top-left-radius: 5px;
-    border-top-right-radius: 5px;
-    margin-bottom: 10px;
+    height: 300px;
     object-fit: cover;
     object-position: center;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+  
   }
   
   /* Product details page specific styles */
