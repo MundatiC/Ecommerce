@@ -87,10 +87,10 @@
   
   /* Home page specific styles */
   .home-background {
-    background-image: url("./images/background.jpeg");
+    background-image: url("./images/pexels-jonny-lew-1121123.jpg");
     background-size: cover;
     background-position: center;
-    height: 400px;
+    height: 600px;
     margin-bottom: 2rem;
   }
   .product-cards-container {
