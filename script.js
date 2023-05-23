@@ -16,9 +16,7 @@ async function fetchProducts() {
   // Function to populate the home page with product cards
   function populateHomePage(products) {
     const contentContainer = document.getElementById('content');
-    const homeBackground = document.createElement('div');
-    homeBackground.classList.add('home-background');
-    contentContainer.appendChild(homeBackground);
+    
   
     const productCardsContainer = document.createElement('div');
     productCardsContainer.classList.add('product-cards-container');
@@ -97,7 +95,15 @@ async function fetchProducts() {
     const product = JSON.parse(localStorage.getItem('selectedProduct'));
     let cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
   
-    cartItems.push(product);
+    const existingItem = cartItems.find(item => item.id === product.id);
+  
+    if (existingItem) {
+      existingItem.count += 1;
+    } else {
+      product.count = 1;
+      cartItems.push(product);
+    }
+  
     localStorage.setItem('cartItems', JSON.stringify(cartItems));
   
     alert('Product added to cart!');
@@ -159,62 +165,161 @@ async function fetchProducts() {
   
   
   // Function to populate the cart page
-  function populateCartPage() {
-    const contentContainer = document.getElementById('content');
-    const cartItems = JSON.parse(localStorage.getItem('cartItems'));
-  
-    if (cartItems && cartItems.length > 0) {
-      const cartList = document.createElement('ul');
-      cartList.classList.add('cart-list');
-  
-      cartItems.forEach(item => {
-        const cartItem = document.createElement('li');
-        cartItem.classList.add('cart-item');
-  
-        const image = document.createElement('img');
-        image.src = item.image;
-        cartItem.appendChild(image);
-  
-        const details = document.createElement('div');
-        details.innerHTML = `
-          <h4>${item.title}</h4>
-          <p>Price: $${item.price}</p>
-          <button class="remove-btn" onclick="removeFromCart(${item.id})">Remove</button>
-        `;
-        cartItem.appendChild(details);
-  
-        cartList.appendChild(cartItem);
-        updateCartCount();
-      });
-  
-      contentContainer.appendChild(cartList);
-    } else {
-      const message = document.createElement('p');
-      message.textContent = 'Your cart is empty.';
-      contentContainer.appendChild(message);
-    }
-  }
-  
-  // Function to remove an item from the cart
-  function removeFromCart(itemId) {
-    let cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
-  
-    cartItems = cartItems.filter(item => item.id !== itemId);
-    localStorage.setItem('cartItems', JSON.stringify(cartItems));
-  
-    // Reload the cart page
-    updateCartCount();
-    window.location.reload();
-  }
+ // Function to add an item to the cart
 
-  // Function to update the cart count
-function updateCartCount() {
-    const cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
-    const cartCountElement = document.querySelector('.cart-count');
-    const cartCount = cartItems.length;
+
+
+
+// Function to populate the cart page
+function populateCartPage() {
+  const contentContainer = document.getElementById('content');
+  const cartItems = JSON.parse(localStorage.getItem('cartItems'));
+
+  if (cartItems && cartItems.length > 0) {
+    const cartList = document.createElement('ul');
+    cartList.classList.add('cart-list');
+    
+    cartItems.forEach(item => {
+      const cartItem = document.createElement('li');
+      cartItem.classList.add('cart-item');
+     
+
+      const image = document.createElement('img');
+      image.src = item.image;
+      cartItem.appendChild(image);
+
+      const details = document.createElement('div');
+      details.classList.add('semi-container')
+      details.innerHTML = `
+        <h4>${item.title}</h4>
+        <div class="count-container">
+          <button class="count-btn decrement" data-item-id="${item.id}">-</button>
+          <span class="count" id="count-${item.id}">${item.count || 1}</span>
+          <button class="count-btn increment" data-item-id="${item.id}">+</button>
+        </div>
+        <p>Price: $${item.price}</p>
+        
+        <button class="remove-btn" onclick="removeFromCart(${item.id})">Remove</button>
+      `;
+     
+
+      cartItem.appendChild(details);
+
+      cartList.appendChild(cartItem);
+    });
+
+    const checkoutContainer = document.createElement('div');
+  checkoutContainer.classList.add('checkout-container');
   
-    cartCountElement.textContent = cartCount;
+  const checkoutButton = document.createElement('button');
+  checkoutButton.classList.add('checkout-button');
+  checkoutButton.textContent = 'Checkout';
+
+  checkoutContainer.appendChild(checkoutButton);
+  cartList.appendChild(checkoutContainer);
+
+    contentContainer.appendChild(cartList);
+
+    // Attach event listeners to increment and decrement buttons
+    const incrementButtons = document.querySelectorAll('.increment');
+    const decrementButtons = document.querySelectorAll('.decrement');
+
+    incrementButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        const itemId = button.dataset.itemId;
+        console.log(itemId);
+        incrementCount(itemId);
+      });
+    });
+
+    decrementButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        const itemId = button.dataset.itemId;
+        decrementCount(itemId);
+      });
+    });
+  } else {
+    const message = document.createElement('p');
+    message.textContent = 'Your cart is empty.';
+    contentContainer.appendChild(message);
   }
+}
+
+// Function to remove an item from the cart
+function removeFromCart(itemId) {
+  let cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
+
+  cartItems = cartItems.filter(item => item.id !== itemId);
+  localStorage.setItem('cartItems', JSON.stringify(cartItems));
+
+  // Reload the cart page
+  updateCartCount();
+  window.location.reload();
+}
+
+// Function to update the cart count
+function updateCartCount() {
+  const cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
+  const cartCountElement = document.querySelector('.cart-count');
+  const cartCount = cartItems.reduce((total, item) => total + (item.count || 1), 0);
+
+  cartCountElement.textContent = cartCount;
+
+  cartItems.forEach(item => {
+    const countElement = document.querySelector(`#count-${item.id}`);
+    if (countElement) {
+      countElement.textContent = item.count || 1;
+    }
+  });
+}
+
+// Function to increment the count of an item
+function incrementCount(itemId) {
+  let cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
+  
+
+  cartItems = cartItems.map(item => {
+    console.log('item.id:', item.id);
+    console.log('itemId:', itemId);
+    
+    if (parseInt(item.id) === parseInt(itemId)) {
+      const count = (item.count || 1) + 1;
+      console.log('Condition matched!');
+      return { ...item, count };
+    }
+    return item;
+  });
+  
+
+  
+  
+  console.log(cartItems);
+
+
+  localStorage.setItem('cartItems', JSON.stringify(cartItems));
+  updateCartCount();
+}
+
+// Function to decrement the count of an item
+function decrementCount(itemId) {
+  let cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
+
+  cartItems = cartItems.map(item => {
+    if (parseInt(item.id) === parseInt(itemId) && (item.count || 1) > 0) {
+      const count = (item.count || 1) - 1;
+      return { ...item, count };
+    }
+    return item;
+  });
+
+  localStorage.setItem('cartItems', JSON.stringify(cartItems));
+  updateCartCount();
+}
+
+
+  
+  
+  
   
  
   
@@ -242,6 +347,7 @@ function updateCartCount() {
     } else if (currentPage === 'cart.html') {
       // Cart page
       populateCartPage();
+      updateCartCount();
     } 
     else {
       // Invalid page, redirect to home page
