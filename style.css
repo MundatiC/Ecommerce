@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Merriweather:ital@1&display=swap');
 /* Global styles */
 * {
   box-sizing: border-box;
@@ -16,42 +17,64 @@ h4,
 h5,
 h6,
 p {
-  color: #333333;
+  color: black;
 }
 
 nav {
-  background-color: #663399;
+  background-color: #a77ecf;
   padding: 10px;
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-end;
   width: 100%;
 }
 
+.logo {
+  font-size: 3rem;
+  font-family: 'Merriweather', serif;
+  color: #1d112c;
+  font-weight: 800;
+}
+
 nav ul {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
   list-style-type: none;
   margin: 0;
   padding: 0;
+  float: right;
+  width: 100%;
 }
 
-nav ul li {
-  display: inline;
-  padding-right: 3em;
+nav ul li{
+
+  margin-left: 2em;
+  color: black;
+}
+.category {
+  
+  margin-right: 2em;
+ 
+  
 }
 
 .cart-img {
   width: 3em;
   vertical-align: middle;
-  position: relative;
+  position:relative;
   transition: 0.3s ease-in-out;
+  margin-left: 2em;
+  
 }
 
 .cart-img:hover {
   transform: scale(1.2);
 }
-.active {
-  transform: scale(1.3);
+.cart-icon{
+  margin-right: 2em;
 }
+
 
 .cart-count {
   background-color: rgb(250, 250, 250);
@@ -62,6 +85,7 @@ nav ul li {
   position: absolute;
   top: -8px;
   right: -8px;
+  order: 1; 
 }
 
 nav ul li a {
@@ -81,7 +105,7 @@ nav ul li a {
 /* Home page specific styles */
 .home-background {
   position: relative;
-  background-image: url("./images/pexels-jonny-lew-1121123.jpg");
+  background-image: url("./images/alexander-grey-aKql9HqH2Xs-unsplash.jpg");
   background-size: cover;
   background-position: center;
   height: 900px;
@@ -97,10 +121,11 @@ nav ul li a {
 #welcome-text {
   position: absolute;
   top: 50%;
-  
-  font-size: 4em;
+  display: flex;
+  justify-content: flex-start;
+  font-size: 5em;
   font-weight: bold;
-  color: #fff;
+  color: #c7afd4;
   z-index: 1;
   opacity: 0.8;
   text-align: center;
@@ -309,6 +334,7 @@ select.select-arrow-active:after {
   background-color: #c59ef1;
   color: #fff;
   cursor: pointer;
+  font-size: large;
 }
 
 .count-btn:hover {
@@ -326,6 +352,15 @@ select.select-arrow-active:after {
   right: 0;
   margin-bottom: 20px; /* Add some margin for spacing */
   margin-right: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+#total-price{
+  margin-bottom: 1em;
+  font-weight: 900;
+  color: #a77ecf;
+  font-size: 2em;
 }
 
 .checkout-button {
